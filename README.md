@@ -1,5 +1,5 @@
 - 👋 Hi, I’m @eco-cup
-- 👀 I’m interested in engineering and renewable energy
+- 👀 I’m interested in mechanical engineering and renewable energy
 - 🌱 I’m currently learning Python and JavaScript
 - 💞️ I’m looking to collaborate on anything to do with the environment
 
