@@ -1,0 +1,144 @@
+<html>
+<head>
+<script> 
+  
+  // this function calculates the principal stresses and maximum shear stress
+  
+  function calculate(){
+    
+    let Sx = document.getElementById("x").value;
+    let Sy = document.getElementById("y").value;
+    let Txy = document.getElementById("xy").value;
+    let R = ((0.5*(Sx - Sy))**2+Txy**2)**0.5;
+    let R2 = R.toFixed(2);
+    let Savg = 0.5*(+Sx + +Sy);
+    let Savg2 = Savg.toFixed(2);
+    let S1 = +Savg + +R;
+    let S12 = S1.toFixed(2);
+    let S2 = +Savg - +R;
+    let S22 = S2.toFixed(2);
+    document.getElementById("Radius").value = R2;
+    document.getElementById("ave").value = Savg2;
+    document.getElementById("SS1").value = S12;
+    document.getElementById("SS2").value = S22;
+
+    // clear canvas
+
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.clearRect(0, 0, 400, 400);
+
+    // calculate scale
+
+    let xMin = Math.min(0, S22)
+    let xMax = Math.max(0, S12)
+    let cWidth = 300 / (xMax - xMin)
+
+    // define border width
+
+    let bWidth = 50
+
+    // draw circle
+
+    ctx.beginPath();
+    ctx.arc(bWidth + cWidth * Savg , 200, cWidth * R ,0,2*Math.PI);
+    ctx.stroke();
+
+    // draw x axis
+
+    ctx.beginPath();
+    ctx.moveTo(25, 200);
+    ctx.lineTo(375, 200);
+    ctx.stroke();
+
+    // draw y axis
+
+    ctx.beginPath();
+    ctx.moveTo(bWidth, 200 - R * cWidth);
+    ctx.lineTo(bWidth, 200 + R * cWidth);
+    ctx.stroke();
+
+    // add points
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(bWidth + S12 * cWidth -2, 198, 4, 4);
+    ctx.fillRect(bWidth + S22 * cWidth - 2, 198, 4, 4);
+    ctx.fillRect(bWidth + cWidth * Savg - 2, 198 - cWidth * R, 4, 4);
+    ctx.fillRect(bWidth + cWidth * Savg - 2, 198, 4, 4);
+
+    // add drawing notation
+
+    ctx.font = "20px Serif";
+    ctx.fillText("\u03C4", bWidth - 20 , 210 - R * cWidth);
+    ctx.fillText("\u03C3", 360, 220);
+    ctx.fillText(`\u03C4max`, bWidth + cWidth * Savg - 5, 195 - cWidth * R )
+    ctx.fillText(`S12`, bWidth + S12 * cWidth +2, 195 )
+    ctx.fillText(`S22`, bWidth + S22 * cWidth -32, 195 )
+    ctx.fillText(`Savg`, bWidth + Savg * cWidth -22, 195 )
+    }
+
+</script>
+<style>
+input {
+  font: "12px Arial";
+  font-size: 16px;
+  padding: 6px 6px;
+  margin: 2px 0;
+  box-sizing: border-box;
+  }
+
+input[type="submit"], input[type="button"] {font-size: 16px;}
+ 
+form    { display: table;      }
+p       { display: table-row;  }
+label   { display: table-cell; }
+input   { display: table-cell; }
+
+</style>
+</head>   
+    
+<body>  
+  
+  <p style="font:caption">
+    Mohr's circle is used to calculate the principal stresses and maximum shear stress in an element under load.
+  </p><br>
+<form>
+  <p>
+    <label for="x" style="font:caption">X Direction Stress:</label>
+    <input type="str" id="x" name="x" value="">
+  </p>
+  <p>
+    <label for="y" style="font:caption">Y Direction Stress:  </label>
+    <input type="str" id="y" name="y" value="">
+  </p>
+  <p>
+    <label for="xy" style="font:caption">Shear Stress:</label>
+    <input type="str" id="xy" name="xy" value="">
+  </p>
+  <p>
+    <input type="button" onclick="calculate()" value="Calculate!"/>
+  </p>
+  <p>
+    <label for="Radius" style="font:caption">Tmax:</label>
+    <input type="text" id="Radius" name="Radius" value="0"><br>
+  </p>
+  <p>
+    <label for="ave" style="font:caption">Savg:</label>
+    <input type="text" id="ave" name="ave" value="0"><br>
+  </p>
+  <p>
+    
+    <label for="SS1" style="font:caption">S1:</label>
+    <input type="text" id="SS1" name="SS1" value="0"><br>
+  </p>
+  <p>
+    <label for="SS2" style="font:caption">S2:</label>
+    <input type="text" id="SS2" name="SS2" value="0"><br>
+  </p>  
+</form>
+
+<canvas id="myCanvas" width="400" height="400" style="border:1px solid #d3d3d3;"></canvas>
+
+</body>  
+    
+</html>
